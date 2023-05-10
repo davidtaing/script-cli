@@ -5,8 +5,9 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
+	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 
 	"github.com/spf13/cobra"
@@ -22,30 +23,43 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		root := "bin" // Specify the root directory you want to traverse
+	Run: runTask,
+}
 
-		var filepaths []string // Declare a slice to store the file paths
+func runTask(cmd *cobra.Command, args []string) {
+	root := "bin" // Specify the root directory you want to traverse
 
-		err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-
-			if !info.IsDir() {
-				filepaths = append(filepaths, path) // Append the file path to the slice
-			}
-
-			return nil
-		})
-
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			fmt.Println("Error:", err)
+			return err
 		}
 
-		// Print the file paths
-		fmt.Println(filepaths)
-	},
+		if !info.IsDir() {
+			err := runScript(path)
+			if err != nil {
+				log.Println("Error opening file:", err)
+			}
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		log.Println("Error:", err)
+	}
+}
+
+func runScript(filepath string) error {
+	cmd := exec.Command("./" + filepath)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func init() {
