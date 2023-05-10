@@ -26,8 +26,8 @@ to quickly create a Cobra application.`,
 	Run: runTask,
 }
 
-func runTask(cmd *cobra.Command, args []string) {
-	root := "bin" // Specify the root directory you want to traverse
+func getFilePaths(root string) ([]string, error) {
+	var filepaths []string
 
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -35,7 +35,7 @@ func runTask(cmd *cobra.Command, args []string) {
 		}
 
 		if !info.IsDir() {
-			err := runScript(path)
+			filepaths = append(filepaths, path)
 			if err != nil {
 				log.Println("Error opening file:", err)
 			}
@@ -46,6 +46,26 @@ func runTask(cmd *cobra.Command, args []string) {
 
 	if err != nil {
 		log.Println("Error:", err)
+	}
+
+	return filepaths, err
+}
+
+func runTask(cmd *cobra.Command, args []string) {
+	root := "bin" // Specify the root directory you want to traverse
+
+	filepaths, err := getFilePaths(root)
+
+	if err != nil {
+		log.Println("Error:", err)
+	}
+
+	for _, path := range filepaths {
+		err := runScript(path)
+
+		if err != nil {
+			log.Println("Error executing script:", err)
+		}
 	}
 }
 
