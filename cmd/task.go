@@ -6,6 +6,8 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -21,7 +23,28 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("task called")
+		root := "bin" // Specify the root directory you want to traverse
+
+		var filepaths []string // Declare a slice to store the file paths
+
+		err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+
+			if !info.IsDir() {
+				filepaths = append(filepaths, path) // Append the file path to the slice
+			}
+
+			return nil
+		})
+
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
+
+		// Print the file paths
+		fmt.Println(filepaths)
 	},
 }
 
