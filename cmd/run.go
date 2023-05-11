@@ -49,16 +49,6 @@ func generateDynamicCommand(name string) *cobra.Command {
 	return cmd
 }
 
-func runTask(cmd *cobra.Command, args []string) {
-	p := "bin/test.sh"
-
-	err := runScript(p)
-
-	if err != nil {
-		log.Println("Error running script:", err)
-	}
-}
-
 func runDynamicTask(p string) commandHandler {
 	return func(cmd *cobra.Command, args []string) {
 		err := runScript(p)
