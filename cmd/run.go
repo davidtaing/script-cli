@@ -14,6 +14,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type commandHandler func(*cobra.Command, []string)
+
 var root = "bin"
 
 // runCmd represents the task command
@@ -57,7 +59,7 @@ func runTask(cmd *cobra.Command, args []string) {
 	}
 }
 
-func runDynamicTask(p string) func(cmd *cobra.Command, args []string) {
+func runDynamicTask(p string) commandHandler {
 	return func(cmd *cobra.Command, args []string) {
 		err := runScript(p)
 
