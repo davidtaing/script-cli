@@ -5,6 +5,7 @@ Copyright © 2023 NAME HERE adavidtaing@gmail.com
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -12,6 +13,8 @@ import (
 
 	"github.com/spf13/cobra"
 )
+
+var root = "bin"
 
 // runCmd represents the task command
 var runCmd = &cobra.Command{
@@ -29,7 +32,39 @@ var runScriptCmd = &cobra.Command{
 	Use:   "script",
 	Short: "Execute a bash script.",
 	Long:  "Execute a bash script.",
-	Run:   runTask,
+}
+
+func generateDynamicCommand(name string) *cobra.Command {
+	var d = fmt.Sprintf("Execute %s.", name)
+
+	var cmd = &cobra.Command{
+		Use:   name,
+		Short: d,
+		Long:  d,
+		Run:   runDynamicTask(name),
+	}
+
+	return cmd
+}
+
+func runTask(cmd *cobra.Command, args []string) {
+	p := "bin/test.sh"
+
+	err := runScript(p)
+
+	if err != nil {
+		log.Println("Error running script:", err)
+	}
+}
+
+func runDynamicTask(p string) func(cmd *cobra.Command, args []string) {
+	return func(cmd *cobra.Command, args []string) {
+		err := runScript(p)
+
+		if err != nil {
+			log.Println("Error running script:", err)
+		}
+	}
 }
 
 func getFilePaths(root string) ([]string, error) {
@@ -57,24 +92,6 @@ func getFilePaths(root string) ([]string, error) {
 	return filepaths, err
 }
 
-func runTask(cmd *cobra.Command, args []string) {
-	root := "bin" // Specify the root directory you want to traverse
-
-	filepaths, err := getFilePaths(root)
-
-	if err != nil {
-		log.Println("Error:", err)
-	}
-
-	for _, path := range filepaths {
-		err := runScript(path)
-
-		if err != nil {
-			log.Println("Error executing script:", err)
-		}
-	}
-}
-
 func runScript(filepath string) error {
 	cmd := exec.Command("./" + filepath)
 	cmd.Stdout = os.Stdout
@@ -89,6 +106,16 @@ func runScript(filepath string) error {
 }
 
 func init() {
+	filepaths, err := getFilePaths(root)
+
+	if err != nil {
+		log.Panicln("Error looking up filepaths in root directory:", err)
+	}
+
+	for _, p := range filepaths {
+		runScriptCmd.AddCommand(generateDynamicCommand(p))
+	}
+
 	runCmd.AddCommand(runScriptCmd)
 	rootCmd.AddCommand(runCmd)
 
