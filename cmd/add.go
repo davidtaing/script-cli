@@ -34,15 +34,17 @@ func init() {
 	// addCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-func createNewScript(name string) {
+func createNewScript(name string) (string, error) {
 	var path = fmt.Sprintf("bin/%s.sh", name)
 
 	err := os.WriteFile(path, []byte("#!/bin/bash\n\n"), 0755)
 
 	if err != nil {
 		fmt.Println("Error creating new script:", err)
-		return
+		return "", err
 	}
 
 	fmt.Println("Created new script at", path)
+
+	return path, nil
 }
