@@ -10,6 +10,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var Editor string
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "script-cli",
@@ -30,5 +32,5 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().String("editor", "gedit", "The editor to use when creating a new script.")
+	rootCmd.PersistentFlags().StringVarP(&Editor, "editor", "e", "gedit", "The editor to use when creating a new script.")
 }
