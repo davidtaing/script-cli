@@ -7,6 +7,8 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"os/exec"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -16,7 +18,8 @@ var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "A brief description of your command",
 	Run: func(cmd *cobra.Command, args []string) {
-		createNewScript("helloworld")
+		path, _ := createNewScript("helloworld")
+		openScriptInEditor(path, "code")
 	},
 }
 
@@ -47,4 +50,32 @@ func createNewScript(name string) (string, error) {
 	fmt.Println("Created new script at", path)
 
 	return path, nil
+}
+
+func openScriptInEditor(path string, editor string) {
+	validEditors := []string{"code", "emacs", "gedit", "nano", "vi", "vim"} // List of allowed editors
+
+	if editor == "" {
+		editor = "vi" // Default editor
+	} else {
+		editor = strings.ToLower(editor)
+		found := false
+		for _, validEditor := range validEditors {
+			if validEditor == editor {
+				break
+			}
+		}
+
+		if !found {
+			fmt.Println("Invalid editor. Using default editor (vi).")
+			editor = "vi" // Fall back to default editor
+		}
+	}
+
+	cmd := exec.Command(editor, path)
+	err := cmd.Run()
+
+	if err != nil {
+		fmt.Println("Error opening script in editor:", err)
+	}
 }
