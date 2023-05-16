@@ -62,6 +62,7 @@ func openScriptInEditor(path string, editor string) {
 		found := false
 		for _, validEditor := range validEditors {
 			if validEditor == editor {
+				found = true
 				break
 			}
 		}
