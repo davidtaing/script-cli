@@ -19,7 +19,7 @@ var addCmd = &cobra.Command{
 	Short: "A brief description of your command",
 	Run: func(cmd *cobra.Command, args []string) {
 		path, _ := createNewScript("helloworld")
-		openScriptInEditor(path, "code")
+		openScriptInEditor(path, Editor)
 	},
 }
 
@@ -56,7 +56,7 @@ func openScriptInEditor(path string, editor string) {
 	validEditors := []string{"code", "emacs", "gedit", "nano", "vi", "vim"} // List of allowed editors
 
 	if editor == "" {
-		editor = "vi" // Default editor
+		editor = "gedit" // Default editor
 	} else {
 		editor = strings.ToLower(editor)
 		found := false
@@ -68,8 +68,8 @@ func openScriptInEditor(path string, editor string) {
 		}
 
 		if !found {
-			fmt.Println("Invalid editor. Using default editor (vi).")
-			editor = "vi" // Fall back to default editor
+			fmt.Println("Invalid editor. Using default editor (gedit).")
+			editor = "gedit" // Fall back to default editor
 		}
 	}
 
