@@ -93,7 +93,7 @@ func promptSelectEditor() string {
 	var err error
 
 	for index < 0 {
-		p := promptui.SelectWithAdd{
+		p := promptui.Select{
 			Label: "Which text editor would you like to use?",
 			Items: editor.ValidEditors,
 		}
