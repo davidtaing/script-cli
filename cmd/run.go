@@ -28,7 +28,7 @@ var runCmd = &cobra.Command{
 			log.Panicln("Error looking up filepaths in root directory:", err)
 		}
 
-		s, err := promptSelectScript(fp)
+		s, err := promptSelectItems(fp, "Select script to run")
 
 		if err != nil {
 			fmt.Println("An invalid script was selected, exiting Run command")
@@ -42,10 +42,10 @@ var runCmd = &cobra.Command{
 	},
 }
 
-func promptSelectScript(scripts []string) (string, error) {
+func promptSelectItems(items []string, label string) (string, error) {
 	p := promptui.Select{
-		Label: "Select script to run",
-		Items: scripts,
+		Label: label,
+		Items: items,
 	}
 
 	i, _, err := p.Run()
@@ -55,7 +55,7 @@ func promptSelectScript(scripts []string) (string, error) {
 		return "", err
 	}
 
-	return scripts[i], nil
+	return items[i], nil
 }
 
 func runScript(filepath string) error {
