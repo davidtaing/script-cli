@@ -12,7 +12,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	directory "github.com/davidtaing/scriptcli/internal/dir"
+	"github.com/davidtaing/scriptcli/internal/dir"
 	"github.com/davidtaing/scriptcli/internal/promptutil"
 )
 
@@ -22,7 +22,7 @@ var runCmd = &cobra.Command{
 	Use:   "run",
 	Short: "A brief description of your command",
 	Run: func(*cobra.Command, []string) {
-		fp, err := directory.GetFilePaths(root)
+		fp, err := dir.GetFilePaths(root)
 
 		if err != nil {
 			log.Panicln("Error looking up filepaths in root directory:", err)
