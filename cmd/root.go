@@ -32,5 +32,5 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&Editor, "editor", "e", "gedit", "The editor to use when creating a new script.")
+	rootCmd.PersistentFlags().StringVarP(&Editor, "editor", "e", "", "The editor to use when creating a new script.")
 }
