@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
 
@@ -22,18 +23,32 @@ var runCmd = &cobra.Command{
 	Use:   "run",
 	Short: "A brief description of your command",
 	Run: func(*cobra.Command, []string) {
-		fmt.Println("run called")
-
 		fp, err := getFilePaths(root)
 
 		if err != nil {
 			log.Panicln("Error looking up filepaths in root directory:", err)
 		}
 
-		fmt.Println(fp)
-
-		// prompt to select script
+		promptSelectScript(fp)
 	},
+}
+
+func promptSelectScript(scripts []string) (string, error) {
+	p := promptui.Select{
+		Label: "Select script to run",
+		Items: scripts,
+	}
+
+	i, _, err := p.Run()
+
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		return "", err
+	}
+
+	fmt.Printf("You choose number %d: %s\n", i+1, scripts[i])
+
+	return scripts[i], nil
 }
 
 func runDynamicTask(p string) commandHandler {
