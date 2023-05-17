@@ -17,7 +17,6 @@ import (
 type commandHandler func(*cobra.Command, []string)
 
 var root = "bin"
-var filepaths []string
 
 var runCmd = &cobra.Command{
 	Use:   "run",
@@ -25,7 +24,12 @@ var runCmd = &cobra.Command{
 	Run: func(*cobra.Command, []string) {
 		fmt.Println("run called")
 
-		// look up files in directory
+		filepaths, err := getFilePaths(root)
+
+		if err != nil {
+			log.Panicln("Error looking up filepaths in root directory:", err)
+		}
+
 		fmt.Println(filepaths)
 
 		// prompt to select script
@@ -81,12 +85,5 @@ func runScript(filepath string) error {
 }
 
 func init() {
-	var err error
-	filepaths, err = getFilePaths(root)
-
-	if err != nil {
-		log.Panicln("Error looking up filepaths in root directory:", err)
-	}
-
 	rootCmd.AddCommand(runCmd)
 }
