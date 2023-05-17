@@ -35,8 +35,6 @@ var runCmd = &cobra.Command{
 			fmt.Println("An invalid script was selected, exiting Run command")
 		}
 
-		fmt.Println(s)
-
 		err = runScript(s)
 
 		if err != nil {
@@ -57,8 +55,6 @@ func promptSelectScript(scripts []string) (string, error) {
 		fmt.Printf("Prompt failed %v\n", err)
 		return "", err
 	}
-
-	fmt.Printf("You choose script: %s\n", scripts[i])
 
 	return scripts[i], nil
 }
