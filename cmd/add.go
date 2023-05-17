@@ -37,7 +37,7 @@ var addCmd = &cobra.Command{
 
 		if openEditor {
 			if Editor == "" {
-				Editor = promptUserForEditor()
+				Editor = promptSelectEditor()
 			}
 
 			path, _ := createNewScript(scriptName)
@@ -84,7 +84,7 @@ func promptOpenEditor() bool {
 	return result == "y" || result == "Y"
 }
 
-func promptUserForEditor() string {
+func promptSelectEditor() string {
 	index := -1
 	var result string
 	var err error
