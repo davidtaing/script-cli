@@ -31,6 +31,10 @@ var runCmd = &cobra.Command{
 
 		s, err := promptSelectScript(fp)
 
+		if err != nil {
+			fmt.Println("An invalid script was selected, exiting Run command")
+		}
+
 		fmt.Println(s)
 
 		err = runScript(s)
