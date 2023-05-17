@@ -17,30 +17,19 @@ import (
 type commandHandler func(*cobra.Command, []string)
 
 var root = "bin"
+var filepaths []string
 
-// runCmd represents the task command
 var runCmd = &cobra.Command{
 	Use:   "run",
 	Short: "A brief description of your command",
-}
+	Run: func(*cobra.Command, []string) {
+		fmt.Println("run called")
 
-var runScriptCmd = &cobra.Command{
-	Use:   "script",
-	Short: "Execute a bash script.",
-	Long:  "Execute a bash script.",
-}
+		// look up files in directory
+		fmt.Println(filepaths)
 
-func generateDynamicCommand(name string) *cobra.Command {
-	var d = fmt.Sprintf("Execute %s.", name)
-
-	var cmd = &cobra.Command{
-		Use:   name,
-		Short: d,
-		Long:  d,
-		Run:   runDynamicTask(name),
-	}
-
-	return cmd
+		// prompt to select script
+	},
 }
 
 func runDynamicTask(p string) commandHandler {
@@ -92,17 +81,12 @@ func runScript(filepath string) error {
 }
 
 func init() {
-	filepaths, err := getFilePaths(root)
+	var err error
+	filepaths, err = getFilePaths(root)
 
 	if err != nil {
 		log.Panicln("Error looking up filepaths in root directory:", err)
 	}
 
-	for _, p := range filepaths {
-		runScriptCmd.AddCommand(generateDynamicCommand(p))
-	}
-
-	runCmd.AddCommand(runScriptCmd)
 	rootCmd.AddCommand(runCmd)
-
 }
