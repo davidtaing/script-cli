@@ -53,7 +53,12 @@ func promptUserForScriptName() string {
 
 	if err != nil {
 		fmt.Printf("Prompt failed %v\n", err)
-		return ""
+	}
+
+	if result == "" {
+		const m = "Script Name was not provided. Exiting"
+		fmt.Println(m)
+		os.Exit(1)
 	}
 
 	return result
