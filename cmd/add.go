@@ -40,7 +40,7 @@ var addCmd = &cobra.Command{
 				Editor = promptSelectEditor()
 			}
 
-			path, _ := createNewScript(scriptName)
+			path, _ := createScript(scriptName)
 			editor.OpenScriptInEditor(path, Editor)
 		}
 	},
@@ -107,7 +107,7 @@ func promptSelectEditor() string {
 	return result
 }
 
-func createNewScript(name string) (string, error) {
+func createScript(name string) (string, error) {
 	var path = fmt.Sprintf("bin/%s.sh", name)
 
 	err := os.WriteFile(path, []byte(`#!/bin/bash
