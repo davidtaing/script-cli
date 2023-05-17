@@ -16,8 +16,6 @@ import (
 	directory "github.com/davidtaing/scriptcli/internal/dir"
 )
 
-type commandHandler func(*cobra.Command, []string)
-
 var root = "bin"
 
 var runCmd = &cobra.Command{
