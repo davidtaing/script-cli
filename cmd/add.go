@@ -33,12 +33,16 @@ var addCmd = &cobra.Command{
 			return
 		}
 
-		if Editor == "" {
-			Editor = promptUserForEditor()
-		}
+		var openEditor = promptOpenEditor()
 
-		path, _ := createNewScript(scriptName)
-		editor.OpenScriptInEditor(path, Editor)
+		if openEditor {
+			if Editor == "" {
+				Editor = promptUserForEditor()
+			}
+
+			path, _ := createNewScript(scriptName)
+			editor.OpenScriptInEditor(path, Editor)
+		}
 	},
 }
 
@@ -67,6 +71,17 @@ func promptUserForScriptName() (string, error) {
 	}
 
 	return result, nil
+}
+
+func promptOpenEditor() bool {
+	p := promptui.Prompt{
+		Label:     "Open in editor?",
+		IsConfirm: true,
+	}
+
+	result, _ := p.Run()
+
+	return result == "y" || result == "Y"
 }
 
 func promptUserForEditor() string {
