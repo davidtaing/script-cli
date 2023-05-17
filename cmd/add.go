@@ -5,6 +5,7 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -23,8 +24,14 @@ var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "A brief description of your command",
 	Run: func(cmd *cobra.Command, args []string) {
+		var err error
 		if scriptName == "" {
-			scriptName = promptUserForScriptName()
+			scriptName, err = promptUserForScriptName()
+		}
+
+		if err != nil {
+			fmt.Println(err)
+			return
 		}
 
 		if Editor == "" {
@@ -41,7 +48,7 @@ func init() {
 	addCmd.Flags().StringVarP(&scriptName, "script", "s", "", "script file name")
 }
 
-func promptUserForScriptName() string {
+func promptUserForScriptName() (string, error) {
 	var result string
 	var err error
 
@@ -53,15 +60,14 @@ func promptUserForScriptName() string {
 
 	if err != nil {
 		fmt.Printf("Prompt failed %v\n", err)
+		return "", err
 	}
 
 	if result == "" {
-		const m = "Script Name was not provided. Exiting"
-		fmt.Println(m)
-		os.Exit(1)
+		return "", errors.New("New script name was not provided. Exiting")
 	}
 
-	return result
+	return result, nil
 }
 
 func promptUserForEditor() string {
