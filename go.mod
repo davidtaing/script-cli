@@ -1,4 +1,4 @@
-module github.com/davidtaing/script-cli
+module github.com/davidtaing/scriptcli
 
 go 1.18
 
