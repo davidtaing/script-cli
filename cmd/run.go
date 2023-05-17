@@ -24,13 +24,13 @@ var runCmd = &cobra.Command{
 	Run: func(*cobra.Command, []string) {
 		fmt.Println("run called")
 
-		filepaths, err := getFilePaths(root)
+		fp, err := getFilePaths(root)
 
 		if err != nil {
 			log.Panicln("Error looking up filepaths in root directory:", err)
 		}
 
-		fmt.Println(filepaths)
+		fmt.Println(fp)
 
 		// prompt to select script
 	},
