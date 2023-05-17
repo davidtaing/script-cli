@@ -85,6 +85,8 @@ func getFilePaths(root string) ([]string, error) {
 }
 
 func runScript(filepath string) error {
+	fmt.Printf("Excecuting script: %v\n\n", filepath)
+
 	cmd := exec.Command("./" + filepath)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
