@@ -54,7 +54,7 @@ func promptSelectScript(scripts []string) (string, error) {
 		return "", err
 	}
 
-	fmt.Printf("You choose number %d: %s\n", i+1, scripts[i])
+	fmt.Printf("You choose script: %s\n", scripts[i])
 
 	return scripts[i], nil
 }
