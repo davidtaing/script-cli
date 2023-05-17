@@ -10,24 +10,58 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
 
-var script string
+var (
+	script       string
+	validEditors = []string{"code", "emacs", "gedit", "nano", "vi", "vim"}
+)
 
-// addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "A brief description of your command",
 	Run: func(cmd *cobra.Command, args []string) {
-		path, _ := createNewScript("helloworld")
-		openScriptInEditor(path, Editor)
+		if script == "" {
+			editor := Editor
+			if editor == "" {
+				editor = promptUserForEditor()
+			}
+
+			path, _ := createNewScript("helloworld")
+			openScriptInEditor(path, editor)
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(addCmd)
 	addCmd.Flags().StringVarP(&script, "script", "s", "", "script file name")
+}
+
+func promptUserForEditor() string {
+	index := -1
+	var result string
+	var err error
+
+	for index < 0 {
+		prompt := promptui.SelectWithAdd{
+			Label:    "Which text editor would you like to use?",
+			Items:    validEditors,
+			AddLabel: "Other",
+		}
+
+		index, result, err = prompt.Run()
+	}
+
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		return ""
+	}
+
+	fmt.Printf("You choose %s\n", result)
+	return result
 }
 
 func createNewScript(name string) (string, error) {
@@ -46,8 +80,6 @@ func createNewScript(name string) (string, error) {
 }
 
 func openScriptInEditor(path string, editor string) {
-	validEditors := []string{"code", "emacs", "gedit", "nano", "vi", "vim"} // List of allowed editors
-
 	if editor == "" {
 		editor = "gedit" // Default editor
 	} else {
