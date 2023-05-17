@@ -10,10 +10,10 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 
 	directory "github.com/davidtaing/scriptcli/internal/dir"
+	"github.com/davidtaing/scriptcli/internal/promptutil"
 )
 
 var root = "bin"
@@ -28,7 +28,7 @@ var runCmd = &cobra.Command{
 			log.Panicln("Error looking up filepaths in root directory:", err)
 		}
 
-		s, err := promptSelectItems(fp, "Select script to run")
+		s, err := promptutil.PromptSelectItems(fp, "Select script to run")
 
 		if err != nil {
 			fmt.Println("An invalid script was selected, exiting Run command")
@@ -40,22 +40,6 @@ var runCmd = &cobra.Command{
 			fmt.Println("Failed to run script: " + s)
 		}
 	},
-}
-
-func promptSelectItems(items []string, label string) (string, error) {
-	p := promptui.Select{
-		Label: label,
-		Items: items,
-	}
-
-	i, _, err := p.Run()
-
-	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
-		return "", err
-	}
-
-	return items[i], nil
 }
 
 func runScript(filepath string) error {
