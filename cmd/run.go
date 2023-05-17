@@ -29,7 +29,15 @@ var runCmd = &cobra.Command{
 			log.Panicln("Error looking up filepaths in root directory:", err)
 		}
 
-		promptSelectScript(fp)
+		s, err := promptSelectScript(fp)
+
+		fmt.Println(s)
+
+		err = runScript(s)
+
+		if err != nil {
+			fmt.Println("Failed to run script: " + s)
+		}
 	},
 }
 
