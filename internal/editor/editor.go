@@ -10,7 +10,7 @@ var ValidEditors = []string{"code", "emacs", "gedit", "nano", "vi", "vim"}
 
 func OpenScriptInEditor(path string, editor string) {
 	if editor == "" {
-		editor = "gedit" // Default editor
+		editor = "gedit"
 	} else {
 		editor = strings.ToLower(editor)
 		found := false
@@ -23,7 +23,7 @@ func OpenScriptInEditor(path string, editor string) {
 
 		if !found {
 			fmt.Println("Invalid editor. Using default editor (gedit).")
-			editor = "gedit" // Fall back to default editor
+			editor = "gedit"
 		}
 	}
 
