@@ -25,7 +25,7 @@ var addCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var err error
 		if scriptName == "" {
-			scriptName, err = promptUserForScriptName()
+			scriptName, err = promptScriptName()
 		}
 
 		if err != nil {
@@ -51,7 +51,7 @@ func init() {
 	addCmd.Flags().StringVarP(&scriptName, "script", "s", "", "script file name")
 }
 
-func promptUserForScriptName() (string, error) {
+func promptScriptName() (string, error) {
 	var result string
 	var err error
 
