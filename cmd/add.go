@@ -55,11 +55,11 @@ func promptScriptName() (string, error) {
 	var result string
 	var err error
 
-	prompt := promptui.Prompt{
+	p := promptui.Prompt{
 		Label: "What would you like to name your new script?",
 	}
 
-	result, err = prompt.Run()
+	result, err = p.Run()
 
 	if err != nil {
 		fmt.Printf("Prompt failed %v\n", err)
@@ -90,12 +90,12 @@ func promptSelectEditor() string {
 	var err error
 
 	for index < 0 {
-		prompt := promptui.SelectWithAdd{
+		p := promptui.SelectWithAdd{
 			Label: "Which text editor would you like to use?",
 			Items: editor.ValidEditors,
 		}
 
-		index, result, err = prompt.Run()
+		index, result, err = p.Run()
 	}
 
 	if err != nil {
