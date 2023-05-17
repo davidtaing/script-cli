@@ -33,16 +33,19 @@ var addCmd = &cobra.Command{
 			return
 		}
 
+		path, _ := createScript(scriptName)
+
 		var openEditor = promptOpenEditor()
 
-		if openEditor {
-			if Editor == "" {
-				Editor = promptSelectEditor()
-			}
-
-			path, _ := createScript(scriptName)
-			editor.OpenScriptInEditor(path, Editor)
+		if !openEditor {
+			fmt.Println("Exiting")
 		}
+
+		if Editor == "" {
+			Editor = promptSelectEditor()
+		}
+
+		editor.OpenScriptInEditor(path, Editor)
 	},
 }
 
@@ -75,7 +78,7 @@ func promptScriptName() (string, error) {
 
 func promptOpenEditor() bool {
 	p := promptui.Prompt{
-		Label:     "Open in editor?",
+		Label:     "Open in editor",
 		IsConfirm: true,
 	}
 
@@ -103,7 +106,6 @@ func promptSelectEditor() string {
 		return ""
 	}
 
-	fmt.Printf("You choose %s\n", result)
 	return result
 }
 
