@@ -59,16 +59,6 @@ func promptSelectScript(scripts []string) (string, error) {
 	return scripts[i], nil
 }
 
-func runDynamicTask(p string) commandHandler {
-	return func(cmd *cobra.Command, args []string) {
-		err := runScript(p)
-
-		if err != nil {
-			log.Println("Error running script:", err)
-		}
-	}
-}
-
 func getFilePaths(root string) ([]string, error) {
 	var filepaths []string
 
