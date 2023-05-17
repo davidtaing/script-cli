@@ -9,10 +9,11 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
 
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
+
+	directory "github.com/davidtaing/scriptcli/internal/dir"
 )
 
 type commandHandler func(*cobra.Command, []string)
@@ -23,7 +24,7 @@ var runCmd = &cobra.Command{
 	Use:   "run",
 	Short: "A brief description of your command",
 	Run: func(*cobra.Command, []string) {
-		fp, err := getFilePaths(root)
+		fp, err := directory.GetFilePaths(root)
 
 		if err != nil {
 			log.Panicln("Error looking up filepaths in root directory:", err)
@@ -57,31 +58,6 @@ func promptSelectScript(scripts []string) (string, error) {
 	}
 
 	return scripts[i], nil
-}
-
-func getFilePaths(root string) ([]string, error) {
-	var filepaths []string
-
-	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if !info.IsDir() {
-			filepaths = append(filepaths, path)
-			if err != nil {
-				log.Println("Error opening file:", err)
-			}
-		}
-
-		return nil
-	})
-
-	if err != nil {
-		log.Println("Error:", err)
-	}
-
-	return filepaths, err
 }
 
 func runScript(filepath string) error {
