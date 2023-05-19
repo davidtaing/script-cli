@@ -12,7 +12,7 @@ import (
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 
-	editor "github.com/davidtaing/scriptcli/internal/editor"
+	"github.com/davidtaing/scriptcli/internal/editor"
 )
 
 var (
