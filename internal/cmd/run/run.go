@@ -2,7 +2,7 @@
 Copyright © 2023 NAME HERE adavidtaing@gmail.com
 
 */
-package cmd
+package run
 
 import (
 	"fmt"
@@ -18,7 +18,7 @@ import (
 
 var root = "bin"
 
-var runCmd = &cobra.Command{
+var RunCmd = &cobra.Command{
 	Use:   "run",
 	Short: "A brief description of your command",
 	Run: func(*cobra.Command, []string) {
@@ -55,8 +55,4 @@ func runScript(filepath string) error {
 	}
 
 	return nil
-}
-
-func init() {
-	rootCmd.AddCommand(runCmd)
 }

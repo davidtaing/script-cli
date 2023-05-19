@@ -8,6 +8,11 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+
+	"github.com/davidtaing/scriptcli/internal/cmd/add"
+	"github.com/davidtaing/scriptcli/internal/cmd/remove"
+	"github.com/davidtaing/scriptcli/internal/cmd/run"
+	"github.com/davidtaing/scriptcli/internal/cmd/update"
 )
 
 var Editor string
@@ -33,4 +38,9 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&Editor, "editor", "e", "", "The editor to use when creating a new script.")
+
+	rootCmd.AddCommand(add.AddCmd)
+	rootCmd.AddCommand(remove.RemoveCmd)
+	rootCmd.AddCommand(run.RunCmd)
+	rootCmd.AddCommand(update.UpdateCmd)
 }

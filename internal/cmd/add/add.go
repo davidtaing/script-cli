@@ -2,7 +2,7 @@
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 
 */
-package cmd
+package add
 
 import (
 	"errors"
@@ -21,7 +21,7 @@ var (
 	scriptDir  = "bin"
 )
 
-var addCmd = &cobra.Command{
+var AddCmd = &cobra.Command{
 	Use:   "add",
 	Short: "A brief description of your command",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -52,8 +52,7 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(addCmd)
-	addCmd.Flags().StringVarP(&scriptName, "script", "s", "", "script file name")
+	AddCmd.Flags().StringVarP(&scriptName, "script", "s", "", "script file name")
 }
 
 func promptScriptName() (string, error) {
